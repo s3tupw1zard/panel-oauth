@@ -45,29 +45,29 @@ class OAuthController extends Controller
      * @throws NotFoundExceptionInterface
      */
     protected function redirect(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
-{
-    if (!app('config')->get('oauth.enabled')) {
-        throw new NotFoundHttpException();
+    {
+        if (!app('config')->get('oauth.enabled')) {
+            throw new NotFoundHttpException();
+        }
+
+        $drivers = json_decode(app('config')->get('oauth.drivers'), true);
+        $driver = $request->get('driver');
+
+        if ($driver == null || !array_has($drivers, $driver) || !$drivers[$driver]['enabled']) {
+            return redirect()->route('auth.login');
+        }
+
+        // Dirty hack
+        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
+        config(['services.' . $driver => array_merge(
+            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            ['redirect' => route('oauth.callback')]
+        )]);
+
+        $request->session()->put('oauth_driver', $driver);
+
+        return Socialite::driver($driver)->redirect();
     }
-
-    $drivers = json_decode(app('config')->get('oauth.drivers'), true);
-    $driver = $request->get('driver');
-
-    if ($driver == null || !array_key_exists($driver, $drivers) || !$drivers[$driver]['enabled']) {
-        return redirect()->route('auth.login');
-    }
-
-    // Konfiguration für Socialite setzen
-    config(['services.' . $driver => array_merge(
-        array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-        ['redirect' => route('oauth.callback', ['driver' => $driver])]
-    )]);
-
-    $request->session()->put('oauth_driver', $driver);
-
-    return Socialite::driver($driver)->redirect();
-}
-
 
     /**
      * Validate and login OAuth user.
@@ -78,36 +78,38 @@ class OAuthController extends Controller
      */
     protected function callback(Request $request): RedirectResponse
     {
+        // If logged in link provider to user
         if ($request->user() != null) {
             return $this->link($request);
         }
-    
+
         $driver = $request->session()->pull('oauth_driver');
-    
+
         if (empty($driver)) {
             return redirect()->route('auth.login');
         }
-    
+
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
-    
-        // Konfiguration für Socialite setzen
+
+        // Dirty hack
+        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-            ['redirect' => route('oauth.callback', ['driver' => $driver])]
+            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            ['redirect' => route('oauth.callback')]
         )]);
-    
+
         $oauthUser = Socialite::driver($driver)->user();
-    
+
         try {
             $user = $this->repository->findFirstWhere([['oauth->' . $driver, $oauthUser->getId()]]);
         } catch (RecordNotFoundException $e) {
             return redirect()->route('auth.login');
         }
-    
+
         $this->auth->guard()->login($user, true);
-    
+
         return redirect('/');
-    }    
+    }
 
     /**
      * Link OAuth id to user.
@@ -117,28 +119,28 @@ class OAuthController extends Controller
     private function link(Request $request): RedirectResponse
     {
         $driver = $request->session()->pull('oauth_linking');
-    
+
         if (empty($driver)) {
             return redirect($this->redirectRoute);
         }
-    
+
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
-    
-        // Konfiguration für Socialite setzen
+
+        // Dirty hack
+        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-            ['redirect' => route('oauth.callback', ['driver' => $driver])]
+            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            ['redirect' => route('oauth.callback')]
         )]);
-    
+
         $oauthUser = Socialite::driver($driver)->user();
-    
+
         $oauth = json_decode($request->user()->oauth, true);
-    
+
         $oauth[$driver] = $oauthUser->getId();
-    
+
         $this->updateService->handle($request->user(), ['oauth' => json_encode($oauth)]);
-    
+
         return redirect($this->redirectRoute);
     }
-    
 }
