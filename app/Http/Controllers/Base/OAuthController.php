@@ -50,8 +50,9 @@ class OAuthController extends Controller
 
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
+        // Try to add missing vars
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
