@@ -122,7 +122,7 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
                         <div css={tw`border-t-2 border-neutral-50 my-4`}/>
                         }
                     </React.Fragment>
-                    )}
+                    }
                     { oauthEnabled &&
                     <div css={oauthRequired ? tw`text-sm text-neutral-500 text-center mt-20` : tw`text-sm text-neutral-500 text-center`}>
                         {JSON.parse(drivers).map((driver: string) => (
