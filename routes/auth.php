@@ -40,7 +40,8 @@ Route::middleware(['throttle:authentication'])->group(function () {
 Route::post('/password/reset', Auth\ResetPasswordController::class)->name('auth.reset-password');
 
 // OAuth endpoint
-Route::get('/oauth', 'OAuthController@redirect')->name('oauth.redirect');
+Route::get('/oauth', OAuthController::class, 'redirect')->name('oauth.redirect');
+//Route::get('/oauth', 'OAuthController@redirect')->name('oauth.redirect');
 
 // Remove the guest middleware and apply the authenticated middleware to this endpoint,
 // so it cannot be used unless you're already logged in.
@@ -50,7 +51,8 @@ Route::post('/logout', [Auth\LoginController::class, 'logout'])
     ->name('auth.logout');
 
 // OAuth callback route accessible when logged in and when logged out
-Route::get('/oauth/callback', 'OAuthController@callback')->name('oauth.callback');
+Route::get('/oauth/callback', OAuthController::class, 'callback')->name('oauth.callback');
+// Route::get('/oauth/callback', 'OAuthController@callback')->name('oauth.callback');
 
 // Catch any other combinations of routes and pass them off to the React component.
 Route::fallback([Auth\LoginController::class, 'index']);
