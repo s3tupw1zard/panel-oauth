@@ -5,7 +5,7 @@ namespace Pterodactyl\Http\Requests\Admin\Settings;
 use Pterodactyl\Traits\Helpers\AvailableLanguages;
 use Pterodactyl\Http\Requests\Admin\AdminFormRequest;
 
-class OAuthSettingsFormRequest extends AdminFormRequest
+abstract class OAuthSettingsFormRequest extends AdminFormRequest
 {
     use AvailableLanguages;
 
