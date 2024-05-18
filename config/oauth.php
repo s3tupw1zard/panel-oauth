@@ -58,5 +58,14 @@ return [
             'client_secret' => env('APP_OAUTH_DISCORD_SECRET'),
             'listener' => 'SocialiteProviders\\Discord\\DiscordExtendSocialite@handle',
         ],
+        'authentik' => [
+            'enabled' => false,
+            'base_url' => env('APP_OAUTH_AUTHENTIK_BASE_URL'),
+            'client_id' => env('APP_OAUTH_AUTHENTIK_KEY'),
+            'client_secret' => env('APP_OAUTH_AUTHENTIK_SECRET'),
+            'redirect' => env('APP_OAUTH_AUTHENTIK_BASE_URL'),
+            'listener' => 'SocialiteProviders\\Authentik\\AuthentikExtendSocialite@handle',
+        ],
+
     ]),
 ];
