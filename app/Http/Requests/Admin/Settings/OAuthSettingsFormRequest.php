@@ -5,14 +5,14 @@ namespace Pterodactyl\Http\Requests\Admin\Settings;
 use Pterodactyl\Traits\Helpers\AvailableLanguages;
 use Pterodactyl\Http\Requests\Admin\AdminFormRequest;
 
-abstract class OAuthSettingsFormRequest extends AdminFormRequest
+class OAuthSettingsFormRequest extends AdminFormRequest
 {
     use AvailableLanguages;
 
     /**
      * @return array
      */
-    public function oauthrules()
+    public function rules()
     {
         return [
             'oauth:enabled' => 'required|in:true,false',
