@@ -25,6 +25,7 @@ use Pterodactyl\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Pterodactyl\Http\Middleware\Api\AuthenticateIPAccess;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Pterodactyl\Http\Middleware\RequireOAuthAuthentication;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Pterodactyl\Http\Middleware\Api\Daemon\DaemonAuthenticate;
 use Pterodactyl\Http\Middleware\Api\Client\RequireClientApiKey;
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
             IsValidJson::class,
             TrackAPIKey::class,
             RequireTwoFactorAuthentication::class,
+            RequireOAuthAuthentication::class,
             AuthenticateIPAccess::class,
         ],
         'application-api' => [

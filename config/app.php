@@ -207,6 +207,7 @@ return [
          * Additional Dependencies
          */
         Prologue\Alerts\AlertsServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*

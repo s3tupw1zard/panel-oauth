@@ -30,6 +30,10 @@ class SettingsServiceProvider extends ServiceProvider
         'pterodactyl:client_features:allocations:enabled',
         'pterodactyl:client_features:allocations:range_start',
         'pterodactyl:client_features:allocations:range_end',
+        'oauth:enabled',
+        'oauth:drivers',
+        'oauth:required',
+        'oauth:disable_other_authentication_if_required',
     ];
 
     /**
@@ -52,6 +56,7 @@ class SettingsServiceProvider extends ServiceProvider
      */
     protected static array $encrypted = [
         'mail:mailers:smtp:password',
+        'oauth:drivers',
     ];
 
     /**

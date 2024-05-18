@@ -3,12 +3,14 @@ import ContentBox from '@/components/elements/ContentBox';
 import UpdatePasswordForm from '@/components/dashboard/forms/UpdatePasswordForm';
 import UpdateEmailAddressForm from '@/components/dashboard/forms/UpdateEmailAddressForm';
 import ConfigureTwoFactorForm from '@/components/dashboard/forms/ConfigureTwoFactorForm';
+import ConfigureOAuthForm from '@/components/dashboard/forms/ConfigureOAuthForm';
 import PageContentBlock from '@/components/elements/PageContentBlock';
 import tw from 'twin.macro';
 import { breakpoint } from '@/theme';
 import styled from 'styled-components/macro';
 import MessageBox from '@/components/MessageBox';
 import { useLocation } from 'react-router-dom';
+import { useStoreState } from 'easy-peasy';
 
 const Container = styled.div`
     ${tw`flex flex-wrap`};
@@ -28,6 +30,7 @@ const Container = styled.div`
 
 export default () => {
     const { state } = useLocation<undefined | { twoFactorRedirect?: boolean }>();
+    const { enabled: oauthEnabled } = useStoreState(state => state.settings.data!.oauth);
 
     return (
         <PageContentBlock title={'Account Overview'}>
@@ -44,9 +47,16 @@ export default () => {
                 <ContentBox css={tw`mt-8 sm:mt-0 sm:ml-8`} title={'Update Email Address'} showFlashes={'account:email'}>
                     <UpdateEmailAddressForm />
                 </ContentBox>
-                <ContentBox css={tw`md:ml-8 mt-8 md:mt-0`} title={'Two-Step Verification'}>
-                    <ConfigureTwoFactorForm />
-                </ContentBox>
+                <div>
+                    <ContentBox css={tw`lg:ml-8 mt-8 lg:mt-0 lg:mb-8`} title={'Configure Two Factor'}>
+                        <ConfigureTwoFactorForm/>
+                    </ContentBox>
+                    {oauthEnabled &&
+                    <ContentBox css={tw`lg:ml-8`} title={'Configure OAuth'}>
+                        <ConfigureOAuthForm/>
+                    </ContentBox>
+                    }
+                </div>
             </Container>
         </PageContentBlock>
     );
