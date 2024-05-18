@@ -12,7 +12,7 @@ class OAuthSettingsFormRequest extends AdminFormRequest
     /**
      * @return array
      */
-    public function rules()
+    public function oauthrules()
     {
         return [
             'oauth:enabled' => 'required|in:true,false',
