@@ -70,12 +70,12 @@ Route::group(['prefix' => 'settings'], function () {
     Route::get('/advanced', [Admin\Settings\AdvancedController::class, 'index'])->name('admin.settings.advanced');
 
     Route::post('/mail/test', [Admin\Settings\MailController::class, 'test'])->name('admin.settings.mail.test');
-    Route::get('/oauth', 'Admin\Settings\OAuthController@index')->name('admin.settings.oauth');
+    Route::get('/oauth', [Admin\Settings\OAuthController::class, 'index'])->name('admin.settings.oauth');
 
     Route::patch('/', [Admin\Settings\IndexController::class, 'update']);
     Route::patch('/mail', [Admin\Settings\MailController::class, 'update']);
     Route::patch('/advanced', [Admin\Settings\AdvancedController::class, 'update']);
-    Route::patch('/oauth', 'Settings\OAuthController@update');
+    Route::patch('/oauth', [Admin\Settings\OAuthController::class, 'update']);
 });
 
 /*
