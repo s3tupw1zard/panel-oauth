@@ -83,6 +83,10 @@ class OAuthController extends Controller
 
         $request->session()->put('oauth_driver', $driver);
 
+        // Debug configuration
+        $config = config('services.authentik');
+        dd($config);
+
         return Socialite::driver($driver)->redirect();
     }
 
@@ -142,6 +146,10 @@ class OAuthController extends Controller
 
         $this->auth->guard()->login($user, true);
 
+        // Debug configuration
+        $config = config('services.authentik');
+        dd($config);
+
         return redirect('/');
     }
 
@@ -191,6 +199,10 @@ class OAuthController extends Controller
         $oauth[$driver] = $oauthUser->getId();
 
         $this->updateService->handle($request->user(), ['oauth' => json_encode($oauth)]);
+
+        // Debug configuration
+        $config = config('services.authentik');
+        dd($config);
 
         return redirect($this->redirectRoute);
     }
