@@ -53,7 +53,7 @@ class OAuthController extends Controller
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
         $driver = $request->get('driver');
 
-        if ($driver == null || !array_has($drivers, $driver) || !$drivers[$driver]['enabled']) {
+        if ($driver == null || !array_key_exists($driver, $drivers) || !$drivers[$driver]['enabled']) {
             return redirect()->route('auth.login');
         }
 
@@ -68,24 +68,13 @@ class OAuthController extends Controller
 
         // Configure the driver
         config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
+            'client_id' => $driverConfig['client_id'],
+            'client_secret' => $driverConfig['client_secret'],
             'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
+            'base_url' => $driverConfig['base_url'],
         ]]);
 
-        // Dirty hack
-        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
-        config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-            ['redirect' => route('oauth.callback')]
-        )]);
-
         $request->session()->put('oauth_driver', $driver);
-
-        // Debug configuration
-        $config = config('services.authentik');
-        dd($config);
 
         return Socialite::driver($driver)->redirect();
     }
@@ -123,18 +112,11 @@ class OAuthController extends Controller
 
         // Configure the driver
         config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
+            'client_id' => $driverConfig['client_id'],
+            'client_secret' => $driverConfig['client_secret'],
             'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
+            'base_url' => $driverConfig['base_url'],
         ]]);
-
-        // Dirty hack
-        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
-        config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-            ['redirect' => route('oauth.callback')]
-        )]);
 
         $oauthUser = Socialite::driver($driver)->user();
 
@@ -145,10 +127,6 @@ class OAuthController extends Controller
         }
 
         $this->auth->guard()->login($user, true);
-
-        // Debug configuration
-        $config = config('services.authentik');
-        dd($config);
 
         return redirect('/');
     }
@@ -179,18 +157,11 @@ class OAuthController extends Controller
 
         // Configure the driver
         config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
+            'client_id' => $driverConfig['client_id'],
+            'client_secret' => $driverConfig['client_secret'],
             'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
+            'base_url' => $driverConfig['base_url'],
         ]]);
-
-        // Dirty hack
-        // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
-        config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
-            ['redirect' => route('oauth.callback')]
-        )]);
 
         $oauthUser = Socialite::driver($driver)->user();
 
@@ -199,10 +170,6 @@ class OAuthController extends Controller
         $oauth[$driver] = $oauthUser->getId();
 
         $this->updateService->handle($request->user(), ['oauth' => json_encode($oauth)]);
-
-        // Debug configuration
-        $config = config('services.authentik');
-        dd($config);
 
         return redirect($this->redirectRoute);
     }
