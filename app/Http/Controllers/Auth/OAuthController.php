@@ -59,7 +59,7 @@ class OAuthController extends Controller
 
         // Verify required keys exist
         $driverConfig = $drivers[$driver];
-        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        $requiredKeys = ['base_url', 'client_id', 'client_secret', 'redirect'];
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $driverConfig)) {
                 throw new \Exception("Missing required config key: $key");
@@ -77,7 +77,7 @@ class OAuthController extends Controller
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
+            array_only($drivers[$driver], ['base_url', 'client_id', 'client_secret', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
@@ -114,7 +114,7 @@ class OAuthController extends Controller
 
         // Verify required keys exist
         $driverConfig = $drivers[$driver];
-        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        $requiredKeys = ['base_url', 'client_id', 'client_secret', 'redirect'];
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $driverConfig)) {
                 throw new \Exception("Missing required config key: $key");
@@ -132,7 +132,7 @@ class OAuthController extends Controller
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
+            array_only($drivers[$driver], ['base_url', 'client_id', 'client_secret', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
@@ -170,7 +170,7 @@ class OAuthController extends Controller
 
         // Verify required keys exist
         $driverConfig = $drivers[$driver];
-        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        $requiredKeys = ['base_url', 'client_id', 'client_secret', 'redirect'];
         foreach ($requiredKeys as $key) {
             if (!array_key_exists($key, $driverConfig)) {
                 throw new \Exception("Missing required config key: $key");
@@ -188,7 +188,7 @@ class OAuthController extends Controller
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
+            array_only($drivers[$driver], ['base_url', 'client_id', 'client_secret', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
