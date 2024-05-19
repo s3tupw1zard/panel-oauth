@@ -63,7 +63,7 @@ return [
             'base_url' => env('APP_OAUTH_AUTHENTIK_BASE_URL'),
             'client_id' => env('APP_OAUTH_AUTHENTIK_KEY'),
             'client_secret' => env('APP_OAUTH_AUTHENTIK_SECRET'),
-            'redirect' => env('APP_OAUTH_AUTHENTIK_BASE_URL'),
+            'redirect' => env('APP_OAUTH_AUTHENTIK_REDIRECT_URI'),
             'listener' => 'SocialiteProviders\\Authentik\\AuthentikExtendSocialite@handle',
         ],
     ]),
