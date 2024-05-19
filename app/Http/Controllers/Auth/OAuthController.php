@@ -57,10 +57,18 @@ class OAuthController extends Controller
             return redirect()->route('auth.login');
         }
 
+        // Configure the driver
+        config(['services.' . $driver => [
+            'client_id' => $drivers[$driver]['client_id'],
+            'client_secret' => $drivers[$driver]['client_secret'],
+            'redirect' => route('oauth.callback'),
+            'base_url' => $drivers[$driver]['base_url'],
+        ]]);
+
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
@@ -91,10 +99,18 @@ class OAuthController extends Controller
 
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
 
+        // Configure the driver
+        config(['services.' . $driver => [
+            'client_id' => $drivers[$driver]['client_id'],
+            'client_secret' => $drivers[$driver]['client_secret'],
+            'redirect' => route('oauth.callback'),
+            'base_url' => $drivers[$driver]['base_url'],
+        ]]);
+
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
@@ -126,10 +142,18 @@ class OAuthController extends Controller
 
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
 
+        // Configure the driver
+        config(['services.' . $driver => [
+            'client_id' => $drivers[$driver]['client_id'],
+            'client_secret' => $drivers[$driver]['client_secret'],
+            'redirect' => route('oauth.callback'),
+            'base_url' => $drivers[$driver]['base_url'],
+        ]]);
+
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
-            array_only($drivers[$driver], ['client_id', 'client_secret']),
+            array_only($drivers[$driver], ['client_id', 'client_secret', 'base_url', 'redirect']),
             ['redirect' => route('oauth.callback')]
         )]);
 
