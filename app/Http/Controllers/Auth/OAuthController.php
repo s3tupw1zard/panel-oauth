@@ -57,6 +57,15 @@ class OAuthController extends Controller
             return redirect()->route('auth.login');
         }
 
+        // Verify required keys exist
+        $driverConfig = $drivers[$driver];
+        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        foreach ($requiredKeys as $key) {
+            if (!array_key_exists($key, $driverConfig)) {
+                throw new \Exception("Missing required config key: $key");
+            }
+        }
+
         // Configure the driver
         config(['services.' . $driver => [
             'client_id' => $drivers[$driver]['client_id'],
@@ -98,6 +107,15 @@ class OAuthController extends Controller
         }
 
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
+
+        // Verify required keys exist
+        $driverConfig = $drivers[$driver];
+        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        foreach ($requiredKeys as $key) {
+            if (!array_key_exists($key, $driverConfig)) {
+                throw new \Exception("Missing required config key: $key");
+            }
+        }
 
         // Configure the driver
         config(['services.' . $driver => [
@@ -141,6 +159,15 @@ class OAuthController extends Controller
         }
 
         $drivers = json_decode(app('config')->get('oauth.drivers'), true);
+
+        // Verify required keys exist
+        $driverConfig = $drivers[$driver];
+        $requiredKeys = ['client_id', 'client_secret', 'base_url', 'redirect'];
+        foreach ($requiredKeys as $key) {
+            if (!array_key_exists($key, $driverConfig)) {
+                throw new \Exception("Missing required config key: $key");
+            }
+        }
 
         // Configure the driver
         config(['services.' . $driver => [
