@@ -66,14 +66,6 @@ class OAuthController extends Controller
             }
         }
 
-        // Configure the driver
-        config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
-            'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
-        ]]);
-
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
         config(['services.' . $driver => array_merge(
@@ -120,14 +112,6 @@ class OAuthController extends Controller
                 throw new \Exception("Missing required config key: $key");
             }
         }
-
-        // Configure the driver
-        config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
-            'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
-        ]]);
 
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
@@ -176,14 +160,6 @@ class OAuthController extends Controller
                 throw new \Exception("Missing required config key: $key");
             }
         }
-
-        // Configure the driver
-        config(['services.' . $driver => [
-            'client_id' => $drivers[$driver]['client_id'],
-            'client_secret' => $drivers[$driver]['client_secret'],
-            'redirect' => route('oauth.callback'),
-            'base_url' => $drivers[$driver]['base_url'],
-        ]]);
 
         // Dirty hack
         // Can't use SocialiteProviders\Manager\Config since all providers are hardcoded for services.php
